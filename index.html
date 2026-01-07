@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Challenge Corner | CEO Direction Key Message</title>
+  <style>
+    :root{
+      --bg1:#061826;
+      --bg2:#0b2a3a;
+      --card: rgba(255,255,255,.08);
+      --card2: rgba(255,255,255,.12);
+      --text:#eaf5ff;
+      --muted: rgba(234,245,255,.72);
+      --accent:#33d6ff;
+      --accent2:#7c5cff;
+      --ok:#39d98a;
+      --err:#ff5c7a;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 20% 0%, rgba(51,214,255,.18), transparent 55%),
+        radial-gradient(700px 520px at 90% 20%, rgba(124,92,255,.20), transparent 55%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+    .wrap{
+      width:min(1100px, 100%);
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:18px;
+    }
+    @media (max-width: 980px){
+      .wrap{grid-template-columns:1fr}
+    }
+    .card{
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,.06));
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .header{
+      padding:18px 18px 10px 18px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      background: rgba(51,214,255,.12);
+      border: 1px solid rgba(51,214,255,.25);
+      font-weight:600;
+      color: var(--text);
+      font-size: 12px;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .title{
+      font-size:20px;
+      line-height:1.15;
+      margin:0;
+      font-weight:800;
+    }
+    .subtitle{
+      margin:8px 0 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .content{padding: 0 18px 18px 18px;}
+    .video{
+      border-radius: 14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.04);
+      aspect-ratio: 16/9;
+    }
+    iframe{width:100%; height:100%; border:0; display:block}
+    .stepper{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 0 0;
+    }
+    .step{
+      flex:1;
+      min-width: 220px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;
+      padding:12px;
+    }
+    .step h4{margin:0 0 6px 0; font-size:13px}
+    .step p{margin:0; color:var(--muted); font-size:12px; line-height:1.5}
+    form{
+      padding: 12px 18px 18px 18px;
+      display:grid;
+      gap:10px;
+    }
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    @media (max-width: 600px){ .grid2{grid-template-columns:1fr} }
+    label{
+      display:block;
+      font-size:12px;
+      color: var(--muted);
+      margin:0 0 6px 0;
+    }
+    input, textarea, select{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      outline:none;
+    }
+    textarea{min-height:120px; resize:vertical}
+    input::placeholder, textarea::placeholder{color: rgba(234,245,255,.45)}
+    .btn{
+      padding:12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(135deg, rgba(51,214,255,.24), rgba(124,92,255,.22));
+      color: var(--text);
+      font-weight:800;
+      cursor:pointer;
+      transition: transform .08s ease, filter .12s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+    .btn:active{transform: scale(.99)}
+    .btn[disabled]{opacity:.6; cursor:not-allowed; filter: grayscale(.2)}
+    .note{
+      font-size:12px;
+      color: var(--muted);
+      line-height:1.5;
+      margin-top:8px;
+    }
+    .toast{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      width:min(420px, calc(100% - 36px));
+      padding:14px 14px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(10,25,38,.88);
+      box-shadow: var(--shadow);
+      display:none;
+    }
+    .toast.show{display:block; animation: pop .18s ease}
+    @keyframes pop{from{transform: translateY(8px); opacity:.7} to{transform: translateY(0); opacity:1}}
+    .toast strong{display:block; margin-bottom:4px}
+    .codeBox{
+      margin-top:10px;
+      padding:10px;
+      border-radius:14px;
+      background: rgba(57,217,138,.12);
+      border:1px solid rgba(57,217,138,.25);
+      display:none;
+    }
+    .codeBox.show{display:block}
+    .code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-weight:900;
+      letter-spacing:.8px;
+      font-size:15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- LEFT: Video & Instructions -->
+    <section class="card">
+      <div class="header">
+        <div>
+          <div class="badge">🎯 Challenge Corner</div>
+          <h1 class="title">CEO Direction | Tangkap Key Message!</h1>
+          <p class="subtitle">
+            Tonton video CEO Direction, lalu tuliskan <b>key message</b> yang kamu tangkap.
+            Jawaban akan tersimpan otomatis ke database. 🚢✨
+          </p>
+        </div>
+        <div class="badge">🕒 Estimasi: 2-4 menit</div>
+      </div>
+
+      <div class="content">
+        <div class="video">
+          <!-- GANTI URL EMBED VIDEO DI SINI -->
+          <iframe
+            src="YOUR_YOUTUBE_EMBED_URL"
+            title="CEO Direction"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+
+        <div class="stepper">
+          <div class="step">
+            <h4>1) Tonton sampai paham</h4>
+            <p>Catat poin utama: arahan, prioritas, dan pesan kunci.</p>
+          </div>
+          <div class="step">
+            <h4>2) Tulis key message</h4>
+            <p>Ringkas, jelas, dan sesuai pemahamanmu dari video.</p>
+          </div>
+          <div class="step">
+            <h4>3) Submit</h4>
+            <p>Data tersimpan dan kamu dapat kode unik sebagai bukti.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Form -->
+    <aside class="card">
+      <div class="header">
+        <div>
+          <div class="badge">📝 Form Jawaban</div>
+          <p class="subtitle">Lengkapi data dengan benar. Pastikan email aktif.</p>
+        </div>
+      </div>
+
+      <form id="form">
+        <div class="grid2">
+          <div>
+            <label>Nama Lengkap</label>
+            <input name="nama" placeholder="Contoh: Nurul Andayani" required />
+          </div>
+          <div>
+            <label>NIPP</label>
+            <input name="nipp" placeholder="Contoh: 1059xxxx" required />
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div>
+            <label>Entitas</label>
+            <input name="entitas" placeholder="Contoh: Pelindo / Subholding / Anak Usaha" required />
+          </div>
+          <div>
+            <label>No. Telp</label>
+            <input name="telp" placeholder="Contoh: 08xxxxxxxxxx" required />
+          </div>
+        </div>
+
+        <div>
+          <label>Alamat Email</label>
+          <input type="email" name="email" placeholder="nama@pelindo.co.id" required />
+        </div>
+
+        <div>
+          <label>Jawaban Key Message</label>
+          <textarea name="keyMessage" placeholder="Tuliskan key message yang kamu tangkap dari video..." required></textarea>
+        </div>
+
+        <button class="btn" id="btn" type="submit">
+          🚀 Submit Key Message
+        </button>
+
+        <div class="codeBox" id="codeBox">
+          <div class="note">Kode unik kamu:</div>
+          <div class="code" id="codeText">-</div>
+        </div>
+
+        <div class="note">
+          Setelah submit, sistem akan menampilkan notifikasi dan kode unik.
+        </div>
+      </form>
+    </aside>
+  </div>
+
+  <div class="toast" id="toast">
+    <strong id="toastTitle">Info</strong>
+    <div id="toastMsg">...</div>
+  </div>
+
+  <script>
+    // GANTI ENDPOINT APPS SCRIPT WEB APP KAMU DI SINI
+    const API_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL";
+
+    const form = document.getElementById("form");
+    const btn = document.getElementById("btn");
+    const toast = document.getElementById("toast");
+    const toastTitle = document.getElementById("toastTitle");
+    const toastMsg = document.getElementById("toastMsg");
+    const codeBox = document.getElementById("codeBox");
+    const codeText = document.getElementById("codeText");
+
+    function showToast(title, msg, type="info"){
+      toastTitle.textContent = title;
+      toastMsg.textContent = msg;
+      toast.style.borderColor = type==="ok" ? "rgba(57,217,138,.35)" : "rgba(255,92,122,.35)";
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 4200);
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = "⏳ Mengirim...";
+
+      codeBox.classList.remove("show");
+      codeText.textContent = "-";
+
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      try{
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(data),
+        });
+
+        const json = await res.json();
+
+        if(json.ok){
+          showToast("✅ Berhasil!", json.message, "ok");
+          if(json.code){
+            codeText.textContent = json.code;
+            codeBox.classList.add("show");
+          }
+          form.reset();
+        } else {
+          showToast("❌ Gagal", json.message || "Terjadi kesalahan.", "err");
+        }
+      } catch(err){
+        showToast("❌ Error", "Tidak bisa terhubung ke server. Periksa API URL / akses Web App.", "err");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "🚀 Submit Key Message";
+      }
+    });
+  </script>
+</body>
+</html>
