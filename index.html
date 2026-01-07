@@ -346,6 +346,24 @@
     const codeBox = document.getElementById("codeBox");
     const codeText = document.getElementById("codeText");
 
+    function jsonResponse(obj) {
+      return ContentService
+        .createTextOutput(JSON.stringify(obj))
+        .setMimeType(ContentService.MimeType.JSON)
+        .setHeader("Access-Control-Allow-Origin", "*")
+        .setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+        .setHeader("Access-Control-Allow-Headers", "Content-Type");
+    }
+
+    function doOptions(e) {
+      return ContentService
+        .createTextOutput("")
+        .setMimeType(ContentService.MimeType.TEXT)
+        .setHeader("Access-Control-Allow-Origin", "*")
+        .setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+        .setHeader("Access-Control-Allow-Headers", "Content-Type");
+    }
+
     function showToast(title, msg, type="info"){
       toastTitle.textContent = title;
       toastMsg.textContent = msg;
@@ -393,6 +411,7 @@
   </script>
 </body>
 </html>
+
 
 
 
