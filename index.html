@@ -34,6 +34,43 @@
       justify-content:center;
       padding:28px;
     }
+    /* ===== Logo Header ===== */
+    .logo-header {
+      position: fixed;
+      top: 16px;
+      left: 0;
+      right: 0;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      pointer-events: none; /* logo tidak mengganggu klik video/form */
+    }
+    
+    .logo {
+      max-height: 40px;     /* proporsi aman */
+      width: auto;
+      opacity: 0.95;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,.35));
+    }
+    
+    /* ===== Ruang Aman untuk Konten ===== */
+    .wrap {
+      margin-top: 80px;   /* INI KUNCI: konten turun, tidak tertimpa logo */
+    }
+    
+    /* ===== Mobile ===== */
+    @media (max-width: 600px) {
+      .logo {
+        max-height: 28px;
+      }
+    
+      .wrap {
+        margin-top: 64px;
+      }
+    }
+
     .wrap{
       width:min(1100px, 100%);
       display:grid;
@@ -224,7 +261,12 @@
   </style>
 </head>
 <body>
-  
+  <!-- Header Logos -->
+  <div class="logo-header">
+    <img src="https://github.com/noorandayani/CEO-Direction/blob/71612c43e48564b91b102d58a4f49577aa8cf417/logo-putih.png" alt="Danantara Indonesia" class="logo logo-left">
+    <img src="https://github.com/noorandayani/CEO-Direction/blob/71612c43e48564b91b102d58a4f49577aa8cf417/Logo%20Pelindo%20Putih.png" alt="Pelindo" class="logo logo-right">
+  </div>
+
   <div class="wrap">
     <!-- LEFT: Video & Instructions -->
     <section class="card">
@@ -416,6 +458,7 @@
   </script>
 </body>
 </html>
+
 
 
 
