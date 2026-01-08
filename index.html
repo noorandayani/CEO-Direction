@@ -348,7 +348,7 @@
     const toastTitle = document.getElementById("toastTitle");
     const toastMsg = document.getElementById("toastMsg");
     const codeBox = document.getElementById("codeBox");
-    // const codeText = document.getElementById("codeText");
+    const codeText = document.getElementById("codeText");
 
     function jsonResponse(obj) {
       return ContentService
@@ -398,7 +398,7 @@
         if(json.ok){
           showToast("✅ Berhasil!", json.message, "ok");
           if(json.code){
-            // codeText.textContent = json.code;
+            codeText.textContent = json.code;
             codeBox.classList.add("show");
           }
           form.reset();
@@ -415,6 +415,7 @@
   </script>
 </body>
 </html>
+
 
 
 
