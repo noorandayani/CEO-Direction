@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stock Predictor Pro (Demo)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>📈 Stock Predictor Pro (Demo)</h1>
+      <p class="sub">
+        Support Indonesia (.JK) + global. Output: harga, arah, sinyal (BUY/HOLD/SELL). Edukasi, bukan rekomendasi.
+      </p>
+    </header>
+
+    <section class="card">
+      <form method="POST" enctype="multipart/form-data" class="form">
+        <div class="grid">
+          <label>
+            <span>Ticker (Indonesia: BBCA.JK, TLKM.JK | Global: AAPL, MSFT)</span>
+            <input name="ticker" placeholder="Contoh: BBCA.JK atau AAPL" />
+          </label>
+
+          <label>
+            <span>Periode data</span>
+            <select name="period">
+              <option value="1y">1y</option>
+              <option value="3y">3y</option>
+              <option value="5y" selected>5y</option>
+              <option value="10y">10y</option>
+              <option value="max">max</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Horizon prediksi (hari bursa)</span>
+            <input type="number" name="horizon" min="1" max="60" value="10" />
+          </label>
+
+          <label>
+            <span>Threshold sinyal (return). Contoh 0.005 = 0.5%</span>
+            <input type="number" name="threshold" step="0.001" min="0.001" max="0.05" value="0.005" />
+          </label>
+
+          <label>
+            <span>Upload CSV (Date, Close) jika tidak pakai ticker</span>
+            <input type="file" name="csvfile" accept=".csv" />
+          </label>
+        </div>
+
+        <button type="submit" class="btn">Generate Forecast</button>
+      </form>
+
+      {% if error %}
+        <div class="error">⚠️ {{ error }}</div>
+      {% endif %}
+    </section>
+
+    {% if pack %}
+      <section class="card">
+        <h2>Ringkasan</h2>
+        <div class="chips">
+          <div class="chip">MAE (walk-forward): <b>{{ "%.4f"|format(pack.mae_price) }}</b></div>
+          <div class="chip">Akurasi arah (walk-forward): <b>{{ "%.3f"|format(pack.acc_dir) }}</b></div>
+        </div>
+        <div class="plot">{{ pack.fig_html | safe }}</div>
+      </section>
+
+      <section class="card">
+        <h2>Forecast Table</h2>
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Pred Close</th>
+                <th>Pred Return</th>
+                <th>Arah</th>
+                <th>Sinyal</th>
+                <th>RSI14</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for idx, row in pack.forecast.iterrows() %}
+                <tr>
+                  <td>{{ idx.strftime("%Y-%m-%d") }}</td>
+                  <td>{{ "%.4f"|format(row["PredictedClose"]) }}</td>
+                  <td>{{ "%.4f"|format(row["PredictedReturn"]) }}</td>
+                  <td><b>{{ row["PredictedDirection"] }}</b></td>
+                  <td><b>{{ row["Signal"] }}</b></td>
+                  <td>{{ "%.2f"|format(row["RSI14"]) }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <p class="note">
+          Sinyal dibuat dari prediksi return + filter RSI. Kamu bisa ubah threshold agar lebih “agresif” atau “kalem”.
+        </p>
+      </section>
+    {% endif %}
+
+    <footer class="footer">
+      <small>API tersedia: <code>/api/predict</code> (POST JSON)</small>
+    </footer>
+  </div>
+</body>
+</html>
